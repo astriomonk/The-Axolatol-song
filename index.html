@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Axolatol Song Hub</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: url('Axolatol pic.jpg') center center / cover no-repeat fixed;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      font-family: sans-serif;
+    }
+
+    select {
+      background: black;
+      border: 2px solid #ff69b4;
+      color: #ff69b4;
+      padding: 8px;
+      border-radius: 5px;
+      font-size: 16px;
+      margin: 10px 0;
+    }
+
+    .neon-frame {
+      width: 70vw;
+      height: 39.375vw;
+      max-height: 60vh;
+      box-shadow: 0 0 15px #ff69b4, 0 0 25px #ff69b4, 0 0 40px #ff69b4;
+      border: 2px solid #ff69b4;
+      border-radius: 12px;
+      overflow: hidden;
+      background-color: black;
+      margin-bottom: 20px;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .sync-button {
+      padding: 10px 25px;
+      background: black;
+      border: 2px solid #ff69b4;
+      color: #ff69b4;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 10px;
+      box-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .sync-button:hover {
+      background: #ff69b4;
+      color: black;
+    }
+
+    #adminPanel {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 15px;
+      border: 2px solid #ff69b4;
+      box-shadow: 0 0 20px #ff69b4;
+      margin-top: 20px;
+    }
+
+    #adminPanel h2 {
+      color: #ff69b4;
+    }
+  </style>
+</head>
+<body>
+
+  <select id="videoSelector">
+    <option value="https://pixeldrain.com/api/file/xUX58M3U">Axolatol Song 1</option>
+    <option value="https://pixeldrain.com/api/file/opVnciH8">Axolatol Song 2</option>
+    <option value="https://pixeldrain.com/api/file/jmNVnynM">Axolatol Song 3</option>
+    <option value="https://pixeldrain.com/api/file/guZ8ts9V">Axolatol Song 4</option>
+  </select>
+
+  <button class="sync-button" onclick="syncVideo()">🔁 Sync Video</button>
+  <button id="adminButton" class="sync-button" onclick="showAdminPanel()">👑 Admin Panel</button>
+
+  <div id="adminPanel">
+    <h2>Admin Powers</h2>
+    <button class="sync-button" onclick="resetAllVideos()">🔄 Reset All Videos</button>
+    <button class="sync-button" onclick="syncVideo()">🔁 Restart Video</button>
+    <button class="sync-button" onclick="toggleMute()">🎵 Mute/Unmute Video</button>
+    <button class="sync-button" onclick="nextVideo()">🎬 Skip to Next Video</button>
+    <button class="sync-button" onclick="hideUI()">🧹 Hide UI</button>
+    <button class="sync-button" onclick="kickEveryone()">🚫 Kick Everyone</button>
+    <button class="sync-button" onclick="closeAdminPanel()">🔒 Close Panel</button>
+  </div>
+
+  <div class="neon-frame">
+    <video id="videoPlayer" controls autoplay>
+      <source src="https://pixeldrain.com/api/file/xUX58M3U" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <script>
+    const selector = document.getElementById('videoSelector');
+    const videoTag = document.getElementById('videoPlayer');
+    const sourceTag = videoTag.querySelector('source');
+
+    selector.addEventListener('change', function () {
+      sourceTag.src = this.value;
+      videoTag.load();
+      videoTag.play();
+    });
+
+    function resetAllVideos() {
+      selector.selectedIndex = 0;
+      selector.dispatchEvent(new Event('change'));
+      videoTag.currentTime = 0;
+      videoTag.play();
+    }
+
+    function syncVideo() {
+      videoTag.currentTime = 0;
+      videoTag.play();
+    }
+
+    function toggleMute() {
+      videoTag.muted = !videoTag.muted;
+    }
+
+    function nextVideo() {
+      selector.selectedIndex = (selector.selectedIndex + 1) % selector.options.length;
+      selector.dispatchEvent(new Event('change'));
+    }
+
+    function hideUI() {
+      document.getElementById("adminButton").style.display = "none";
+      document.getElementById("adminPanel").style.display = "none";
+      document.getElementById("videoSelector").style.display = "none";
+      document.querySelectorAll(".sync-button").forEach(btn => btn.style.display = "none");
+    }
+
+    function kickEveryone() {
+      document.body.innerHTML = "<h1 style='color: pink; text-align: center; margin-top: 20%; font-size: 48px;'>You have been kicked!</h1>";
+      setTimeout(() => {
+        window.location.href = "https://google.com";
+      }, 2500);
+    }
+
+    let adminUnlocked = false;
+
+    function showAdminPanel() {
+      if (!adminUnlocked) {
+        const code = prompt("Enter admin password:");
+        if (code === "ADK999") {
+          adminUnlocked = true;
+          document.getElementById("adminPanel").style.display = "flex";
+          console.log("Admin access granted.");
+        } else {
+          alert("Incorrect code.");
+        }
+      } else {
+        document.getElementById("adminPanel").style.display = "flex";
+      }
+    }
+
+    function closeAdminPanel() {
+      document.getElementById("adminPanel").style.display = "none";
+    }
+  </script>
+
+</body>
+</html>

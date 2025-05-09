@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Axolatol Song Hub</title>
+  <title>Axolotl Song</title>
   <style>
     html, body {
       margin: 0;
@@ -83,10 +83,11 @@
 <body>
 
   <select id="videoSelector">
-    <option value="https://pixeldrain.com/api/file/xUX58M3U">Axolatol Song 1</option>
-    <option value="https://pixeldrain.com/api/file/opVnciH8">Axolatol Song 2</option>
-    <option value="https://pixeldrain.com/api/file/jmNVnynM">Axolatol Song 3</option>
-    <option value="https://pixeldrain.com/api/file/guZ8ts9V">Axolatol Song 4</option>
+    <option value="https://pixeldrain.com/api/file/kziHw2rb">Axolotl Song 1</option>
+    <option value="https://pixeldrain.com/api/file/3V8BqKx2">Axolotl Song 2</option>
+    <option value="https://pixeldrain.com/api/file/UZ373vin">Axolotl Song 3</option>
+    <option value="https://pixeldrain.com/api/file/zGoWWRVZ">Axolotl Song 4</option>
+    <option value="https://pixeldrain.com/api/file/aDUAGnDF">Axolotl Song 5</option>
   </select>
 
   <button class="sync-button" onclick="syncVideo()">🔁 Sync Video</button>
@@ -105,7 +106,7 @@
 
   <div class="neon-frame">
     <video id="videoPlayer" controls autoplay>
-      <source src="https://pixeldrain.com/api/file/xUX58M3U" type="video/mp4">
+      <source src="https://pixeldrain.com/api/file/kziHw2rb" type="video/mp4">
       Your browser does not support the video tag.
     </video>
   </div>
@@ -146,7 +147,7 @@
       document.getElementById("adminButton").style.display = "none";
       document.getElementById("adminPanel").style.display = "none";
       document.getElementById("videoSelector").style.display = "none";
-      document.querySelectorAll(".sync-button").forEach(btn => btn.style.display = "none");
+      document.querySelector(".sync-button").style.display = "none";
     }
 
     function kickEveryone() {

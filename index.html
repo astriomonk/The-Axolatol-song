@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Axolotl Song</title>
+  <title>Video For ADK</title>
   <style>
     html, body {
       margin: 0;
@@ -17,14 +17,21 @@
       font-family: sans-serif;
     }
 
-    select {
+    select, button {
       background: black;
       border: 2px solid #ff69b4;
       color: #ff69b4;
-      padding: 8px;
-      border-radius: 5px;
+      padding: 10px;
+      border-radius: 8px;
       font-size: 16px;
-      margin: 10px 0;
+      margin: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4;
+    }
+
+    select:hover, button:hover {
+      background: #ff69b4;
+      color: black;
     }
 
     .neon-frame {
@@ -45,139 +52,90 @@
       object-fit: cover;
     }
 
-    .sync-button {
-      padding: 10px 25px;
-      background: black;
-      border: 2px solid #ff69b4;
-      color: #ff69b4;
-      font-size: 18px;
-      border-radius: 8px;
-      cursor: pointer;
-      margin: 10px;
-      box-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4;
-      transition: background 0.2s, color 0.2s;
-    }
-
-    .sync-button:hover {
-      background: #ff69b4;
-      color: black;
-    }
-
     #adminPanel {
       display: none;
       flex-direction: column;
       align-items: center;
-      background: rgba(0, 0, 0, 0.7);
       padding: 20px;
-      border-radius: 15px;
       border: 2px solid #ff69b4;
-      box-shadow: 0 0 20px #ff69b4;
-      margin-top: 20px;
+      border-radius: 10px;
+      background-color: rgba(0,0,0,0.8);
+      color: #ff69b4;
     }
 
-    #adminPanel h2 {
-      color: #ff69b4;
+    #adminToggle {
+      position: absolute;
+      top: 10px;
+      right: 10px;
     }
   </style>
 </head>
 <body>
+  <button id="adminToggle">🔒 Unlock Skibidy Powers</button>
 
-  <select id="videoSelector">
-    <option value="https://pixeldrain.com/api/file/kziHw2rb">Axolotl Song 1</option>
-    <option value="https://pixeldrain.com/api/file/3V8BqKx2">Axolotl Song 2</option>
-    <option value="https://pixeldrain.com/api/file/UZ373vin">Axolotl Song 3</option>
-    <option value="https://pixeldrain.com/api/file/zGoWWRVZ">Axolotl Song 4</option>
-    <option value="https://pixeldrain.com/api/file/aDUAGnDF">Axolotl Song 5</option>
-  </select>
-
-  <button class="sync-button" onclick="syncVideo()">🔁 Sync Video</button>
-  <button id="adminButton" class="sync-button" onclick="showAdminPanel()">👑 Admin Panel</button>
-
-  <div id="adminPanel">
-    <h2>Admin Powers</h2>
-    <button class="sync-button" onclick="resetAllVideos()">🔄 Reset All Videos</button>
-    <button class="sync-button" onclick="syncVideo()">🔁 Restart Video</button>
-    <button class="sync-button" onclick="toggleMute()">🎵 Mute/Unmute Video</button>
-    <button class="sync-button" onclick="nextVideo()">🎬 Skip to Next Video</button>
-    <button class="sync-button" onclick="hideUI()">🧹 Hide UI</button>
-    <button class="sync-button" onclick="kickEveryone()">🚫 Kick Everyone</button>
-    <button class="sync-button" onclick="closeAdminPanel()">🔒 Close Panel</button>
-  </div>
-
-  <div class="neon-frame">
-    <video id="videoPlayer" controls autoplay>
-      <source src="https://pixeldrain.com/api/file/kziHw2rb" type="video/mp4">
+  <div class="neon-frame" id="videoContainer">
+    <video id="videoPlayer" controls autoplay loop>
+      <source src="https://pixeldrain.com/api/file/LLjvs6s" type="video/mp4">
       Your browser does not support the video tag.
     </video>
   </div>
 
-  <script>
-    const selector = document.getElementById('videoSelector');
-    const videoTag = document.getElementById('videoPlayer');
-    const sourceTag = videoTag.querySelector('source');
+  <select id="videoSelector">
+    <option value="https://pixeldrain.com/u/Qcru3QPC">Video 1</option>
+    <option value="https://pixeldrain.com/u/za4mUUbt">Video 2</option>
+    <option value="https://pixeldrain.com/u/pz8ayp4H">Video 3</option>
+    <option value="https://pixeldrain.com/u/tWK1Egn3">Video 4</option>
+  </select>
 
-    selector.addEventListener('change', function () {
-      sourceTag.src = this.value;
-      videoTag.load();
-      videoTag.play();
+  <button onclick="syncVideo()">🔁 Sync Video</button>
+
+  <div id="adminPanel">
+    <h2>Admin Panel</h2>
+    <button onclick="resetVideo()">🌀 Reset All Videos</button>
+    <button onclick="kickEveryone()">🚫 Kick Everyone</button>
+  </div>
+
+  <script>
+    const video = document.getElementById('videoPlayer');
+    const source = video.querySelector('source');
+    const selector = document.getElementById('videoSelector');
+    const adminToggle = document.getElementById('adminToggle');
+    const adminPanel = document.getElementById('adminPanel');
+    const videoContainer = document.getElementById('videoContainer');
+
+    selector.addEventListener('change', () => {
+      source.src = selector.value;
+      video.load();
+      video.play();
     });
 
-    function resetAllVideos() {
-      selector.selectedIndex = 0;
-      selector.dispatchEvent(new Event('change'));
-      videoTag.currentTime = 0;
-      videoTag.play();
-    }
-
     function syncVideo() {
-      videoTag.currentTime = 0;
-      videoTag.play();
+      video.currentTime = 0;
+      video.play();
     }
 
-    function toggleMute() {
-      videoTag.muted = !videoTag.muted;
-    }
-
-    function nextVideo() {
-      selector.selectedIndex = (selector.selectedIndex + 1) % selector.options.length;
-      selector.dispatchEvent(new Event('change'));
-    }
-
-    function hideUI() {
-      document.getElementById("adminButton").style.display = "none";
-      document.getElementById("adminPanel").style.display = "none";
-      document.getElementById("videoSelector").style.display = "none";
-      document.querySelector(".sync-button").style.display = "none";
+    function resetVideo() {
+      video.currentTime = 0;
+      video.load();
     }
 
     function kickEveryone() {
-      document.body.innerHTML = "<h1 style='color: pink; text-align: center; margin-top: 20%; font-size: 48px;'>You have been kicked!</h1>";
+      document.body.innerHTML = "<h1 style='color: pink; text-align: center; margin-top: 20%; font-size: 48px;'>Womp Womp!,You Got Kicked</h1>";
       setTimeout(() => {
         window.location.href = "https://google.com";
       }, 2500);
     }
 
-    let adminUnlocked = false;
-
-    function showAdminPanel() {
-      if (!adminUnlocked) {
-        const code = prompt("Enter admin password:");
-        if (code === "ADK999") {
-          adminUnlocked = true;
-          document.getElementById("adminPanel").style.display = "flex";
-          console.log("Admin access granted.");
-        } else {
-          alert("Incorrect code.");
-        }
+    adminToggle.addEventListener('click', () => {
+      const pass = prompt("Enter The Code ADK Member (Thats not the code BTW):");
+      if (pass === 'ADK999') {
+        adminPanel.style.display = 'flex';
+        videoContainer.style.display = 'none';
+        adminToggle.style.display = 'none';
       } else {
-        document.getElementById("adminPanel").style.display = "flex";
+        alert("Your Stupid.");
       }
-    }
-
-    function closeAdminPanel() {
-      document.getElementById("adminPanel").style.display = "none";
-    }
+    });
   </script>
-
 </body>
 </html>
